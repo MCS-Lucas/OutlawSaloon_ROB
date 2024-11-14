@@ -1,6 +1,7 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+<<<<<<< HEAD
     <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">
         <list>
@@ -20,6 +21,12 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="list.*" />
+=======
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="starship.Starship.*" />
+>>>>>>> 63ea0c2a64d02fda448f5ae63e57e82347e505ff
         </list>
       </option>
     </inspection_tool>
