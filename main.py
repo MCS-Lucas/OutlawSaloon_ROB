@@ -8,6 +8,7 @@
 import pygame
 import sys
 import config
+from src.level import bg
 
 
 
@@ -18,6 +19,7 @@ pygame.init()
 screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 pygame.display.set_caption("Outlaw Saloon: Rails of Blood")
 
+
 # Loop principal do jogo
 running = True
 while running:
@@ -25,8 +27,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Preencher a tela com uma cor de fundo
-    screen.fill(WHITE)
+    screen.blit(bg, (0, 0))
+    pygame.display.update()
+
+
+
 
     # Atualizar a tela
     pygame.display.flip()

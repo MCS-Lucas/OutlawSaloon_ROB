@@ -6,5 +6,8 @@
 
 
 class Enemy:
-    def __init__(self):
-        pass
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self.x = x
+        self.y = y
