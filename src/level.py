@@ -27,9 +27,5 @@ class Level:
         # Desenha o background
         screen.blit(self.background, (0, 0))
 
-        # Desenha as plataformas (para teste, pode colorir)
-        for platform in self.platforms:
-            pygame.draw.rect(screen, (255, 0, 0), platform, 2)  # Apenas para visualizar
-
     def get_platforms(self):
         return self.platforms
