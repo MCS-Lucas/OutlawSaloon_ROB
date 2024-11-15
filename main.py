@@ -7,18 +7,21 @@
 
 import pygame
 import sys
+import config
+from src.level import bg
+from src.enemy import Enemy
+
+
 
 # Inicializar o Pygame
 pygame.init()
 
 # Configurações da tela
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 pygame.display.set_caption("Outlaw Saloon: Rails of Blood")
 
-# Configurações de cores
-WHITE = (255, 255, 255)
+# Instâncias
+cowboy3 = Enemy(100, 410, 60, 60, 600)
 
 # Loop principal do jogo
 running = True
@@ -27,8 +30,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Preencher a tela com uma cor de fundo
-    screen.fill(WHITE)
+    screen.blit(bg, (0, 0))
+    cowboy3.draw(screen)
+    pygame.display.update()
+
+
 
     # Atualizar a tela
     pygame.display.flip()
