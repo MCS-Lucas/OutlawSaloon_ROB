@@ -52,7 +52,7 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         """Inicia o pulo se não estiver pulando."""
         if not self.is_jumping:
-            self.rect.y += 15
+            self.rect.y += 10
             self.is_jumping = True
             self.velocity_y = -15
             self.update_animation(self.jump_images)
