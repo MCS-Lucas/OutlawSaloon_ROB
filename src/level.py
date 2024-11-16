@@ -15,7 +15,7 @@ class Level:
         self.background = pygame.image.load(BACKGROUND_PATH).convert()
         self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        # Define as plataformas como retângulos (ou carregue de um arquivo de configuração)
+        # Define as plataformas como retângulos
         self.platforms = [
             pygame.Rect(0, 684, 1280, 50),
             pygame.Rect(573, 650, 60, 60),
@@ -26,6 +26,10 @@ class Level:
     def draw(self, screen):
         # Desenha o background
         screen.blit(self.background, (0, 0))
+
+        # Desenha as plataformas (exemplo: cor verde para visualizar)
+        for platform in self.platforms:
+            pygame.draw.rect(screen, (0, 255, 0), platform)  # Verde para destacar
 
     def get_platforms(self):
         return self.platforms
