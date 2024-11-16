@@ -29,8 +29,13 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = False
         self.is_shooting = False
         self.move_index = 0
+        self.jump_index = 0
         self.shoot_index = 0
         self.velocity_y = 0
+
+        # Controle de velocidade da animação
+        self.frame_count = 0
+        self.frame_delay = 5  # Número de frames entre cada atualização de animação
 
     def load_images(self, folder_name):
         """Carrega uma lista de imagens de uma pasta específica."""
@@ -46,28 +51,31 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_d]:  # Movendo para a direita com a tecla 'D'
             self.rect.x += 5
             self.update_animation(self.move_images)
-        elif keys[pygame.K_SPACE]:
+
+        if keys[pygame.K_SPACE]:
             self.jump()
 
     def jump(self):
         """Inicia o pulo se não estiver pulando."""
         if not self.is_jumping:
-            self.rect.y += 10
-            self.is_jumping = True
             self.velocity_y = -15
-            self.update_animation(self.jump_images)
+            self.is_jumping = True
+            self.jump_index = 0  # Reinicia a animação de pulo
 
     def apply_gravity(self, platforms):
         """Aplica a gravidade ao jogador."""
-        # Verifica a colisão com cada plataforma
+        self.rect.y += self.velocity_y
+        self.velocity_y += 1  # Gravidade constante
+
+        # Verifica colisão com plataformas
         for platform in platforms:
             if self.rect.colliderect(platform) and self.velocity_y > 0:  # Só verifica se caindo
-                self.rect.bottom = platform.top  # Coloca o jogador em cima da plataforma
+                self.rect.bottom = platform.top  # Alinha o jogador com a plataforma
                 self.is_jumping = False
-                self.velocity_y = 0  # Para a velocidade ao colidir
+                self.velocity_y = 0
+                return
 
-        self.rect.y += self.velocity_y
-        self.velocity_y += 1
+        # Se o jogador atingir o chão
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height:
             self.rect.y = SCREEN_HEIGHT - self.rect.height
             self.is_jumping = False
@@ -79,20 +87,36 @@ class Player(pygame.sprite.Sprite):
 
     def update_animation(self, animation_images):
         """Atualiza o frame da animação do jogador."""
-        self.move_index = (self.move_index + 1) % len(animation_images)
-        self.image = animation_images[self.move_index]
+        # Incrementa o contador de frames
+        self.frame_count += 1
+        if self.frame_count >= self.frame_delay:
+            self.frame_count = 0  # Reinicia o contador
+            self.move_index = (self.move_index + 1) % len(animation_images)
+            self.image = animation_images[self.move_index]
 
     def update(self, platforms):
         """Atualiza o estado e a animação do jogador com a física de colisão."""
         self.move()
-        self.apply_gravity(platforms)  # Passa as plataformas para a função
+        self.apply_gravity(platforms)
+
+        # Atualiza animação de pulo enquanto estiver no ar
+        if self.is_jumping:
+            self.frame_count += 1
+            if self.frame_count >= self.frame_delay:
+                self.frame_count = 0
+                if self.jump_index < len(self.jump_images):
+                    self.image = self.jump_images[self.jump_index]
+                    self.jump_index += 1
 
         # Verifica e atualiza a animação de tiro
         if self.is_shooting:
-            self.image = self.shoot_images[self.shoot_index]
-            self.shoot_index += 1
-            if self.shoot_index >= len(self.shoot_images):
-                self.is_shooting = False
+            self.frame_count += 1
+            if self.frame_count >= self.frame_delay:
+                self.frame_count = 0
+                self.image = self.shoot_images[self.shoot_index]
+                self.shoot_index += 1
+                if self.shoot_index >= len(self.shoot_images):
+                    self.is_shooting = False
 
     def draw(self, screen):
         """Desenha o jogador na tela."""
