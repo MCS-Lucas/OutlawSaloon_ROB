@@ -3,8 +3,10 @@
 
     Define a lógica e o comportamento do jogador.
 """
-import pygame
 import os
+
+import pygame
+
 from config import SCREEN_HEIGHT
 
 
@@ -63,22 +65,34 @@ class Player(pygame.sprite.Sprite):
             self.jump_index = 0  # Reinicia a animação de pulo
 
     def apply_gravity(self, platforms):
-        """Aplica a gravidade ao jogador."""
+        """Aplica a gravidade e impede que o jogador atravesse as plataformas."""
         self.rect.y += self.velocity_y
         self.velocity_y += 1  # Gravidade constante
 
-        # Verifica colisão com plataformas
         for platform in platforms:
-            if self.rect.colliderect(platform) and self.velocity_y > 0:  # Só verifica se caindo
-                self.rect.bottom = platform.top  # Alinha o jogador com a plataforma
-                self.is_jumping = False
-                self.velocity_y = 0
-                return
+            if self.rect.colliderect(platform):
+                # O jogador está caindo e colidiu com o topo da plataforma
+                if self.velocity_y > 0 and self.rect.bottom - self.velocity_y <= platform.top:
+                    self.rect.bottom = platform.top  # Coloca o jogador no topo da plataforma
+                    self.is_jumping = False  # Termina o pulo
+                    self.velocity_y = 0  # Cancela a velocidade vertical
+                # O jogador está subindo e colidiu com a parte inferior da plataforma
+                elif self.velocity_y < 0 and self.rect.top >= platform.bottom - self.velocity_y:
+                    self.rect.top = platform.bottom  # Impede atravessar a plataforma
+                    self.velocity_y = 0  # Para o movimento vertical
 
-        # Se o jogador atingir o chão
-        if self.rect.y >= SCREEN_HEIGHT - self.rect.height:
-            self.rect.y = SCREEN_HEIGHT - self.rect.height
+            # Colisão com as laterais da plataforma
+            if self.rect.colliderect(platform):
+                if self.rect.right > platform.left > self.rect.left:
+                    self.rect.right = platform.left  # Colisão no lado esquerdo do jogador
+                elif self.rect.left < platform.right < self.rect.right:
+                    self.rect.left = platform.right  # Colisão no lado direito do jogador
+
+        # Impede que o jogador atravesse o chão
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
             self.is_jumping = False
+            self.velocity_y = 0
 
     def shoot(self):
         """Inicia a sequência de tiro."""

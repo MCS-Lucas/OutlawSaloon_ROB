@@ -20,6 +20,8 @@ class Level:
             pygame.Rect(0, 684, 1280, 50),
             pygame.Rect(573, 650, 60, 60),
             pygame.Rect(1150, 638, 200, 70),
+            pygame.Rect(400, 500, 100, 20),
+            pygame.Rect(665, 590, 100, 20),
             # Adicione mais conforme necessário
         ]
 
