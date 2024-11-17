@@ -23,16 +23,14 @@ class Level:
             pygame.Rect(400, 500, 100, 15),
             pygame.Rect(665, 585, 50, 15),
             pygame.Rect(678, 443, 70, 15),
+            pygame.Rect(0, 400, 20, 400),
+            pygame.Rect(1270, 400, 20, 400),
             # Adicione mais conforme necessário
         ]
 
     def draw(self, screen):
         # Desenha o background
         screen.blit(self.background, (0, 0))
-
-        # Desenha as plataformas (exemplo: cor verde para visualizar)
-        for platform in self.platforms:
-            pygame.draw.rect(screen, (0, 255, 0), platform)  # Verde para destacar
 
     def get_platforms(self):
         return self.platforms
