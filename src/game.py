@@ -35,7 +35,6 @@ class Game:
         # Atualiza o jogador com colisões de plataformas
         self.player.update(self.level.get_platforms(), self.enemies, self.ui)
 
-
         # Atualiza todos os inimigos
         for enemy in self.enemies:
             enemy.update(self.player)
