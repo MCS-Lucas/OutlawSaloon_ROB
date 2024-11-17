@@ -18,10 +18,11 @@ class Level:
         # Define as plataformas como retângulos
         self.platforms = [
             pygame.Rect(0, 684, 1280, 50),
-            pygame.Rect(573, 650, 60, 60),
-            pygame.Rect(1150, 638, 200, 70),
-            pygame.Rect(400, 500, 100, 20),
-            pygame.Rect(665, 590, 100, 20),
+            pygame.Rect(595, 650, 40, 60),
+            pygame.Rect(1180, 638, 100, 70),
+            pygame.Rect(400, 500, 100, 15),
+            pygame.Rect(665, 585, 50, 15),
+            pygame.Rect(678, 443, 70, 15),
             # Adicione mais conforme necessário
         ]
 
