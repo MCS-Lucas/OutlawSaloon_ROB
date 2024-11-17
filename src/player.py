@@ -108,10 +108,19 @@ class Player(pygame.sprite.Sprite):
             self.move_index = (self.move_index + 1) % len(animation_images)
             self.image = animation_images[self.move_index]
 
-    def update(self, platforms):
+    def check_enemy_collision(self, enemies, ui):
+        """Verifica colisão com inimigos e reduz vida."""
+        for enemy in enemies:
+            if self.rect.colliderect(enemy.rect):
+                ui.reduce_life()
+                # Opcional: reposicione o jogador após colisão
+                self.rect.center = (100, SCREEN_HEIGHT - 100)
+
+    def update(self, platforms, enemies, ui):
         """Atualiza o estado e a animação do jogador com a física de colisão."""
         self.move()
         self.apply_gravity(platforms)
+        self.check_enemy_collision(enemies, ui)
 
         # Atualiza animação de pulo enquanto estiver no ar
         if self.is_jumping:

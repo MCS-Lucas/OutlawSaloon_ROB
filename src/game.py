@@ -9,6 +9,7 @@ from config import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.level import Level
 from src.player import Player
 from src.enemies import Enemy
+from src.ui import UI
 
 
 class Game:
@@ -21,9 +22,9 @@ class Game:
         self.enemies = [  # Lista de inimigos
             Enemy(x=680, y=600, patrol_range=(680, 1100), platforms=self.level.get_platforms())
         ]
+        self.ui = UI(self.screen)  # Inicializa o sistema de interface
         self.clock = pygame.time.Clock()
         self.running = True
-        print(f"Inimigos carregados: {len(self.enemies)}")
 
     def get_player(self):
         """Retorna o jogador para interações externas."""
@@ -32,11 +33,16 @@ class Game:
     def update(self):
         """Atualiza os elementos do jogo."""
         # Atualiza o jogador com colisões de plataformas
-        self.player.update(self.level.get_platforms())
+        self.player.update(self.level.get_platforms(), self.enemies, self.ui)
+
 
         # Atualiza todos os inimigos
         for enemy in self.enemies:
             enemy.update(self.player)
+
+        # Verifica se o jogo acabou
+        if self.ui.is_game_over():
+            self.running = False
 
     def draw(self):
         """Desenha os elementos do jogo."""
@@ -49,6 +55,9 @@ class Game:
         # Desenha os inimigos
         for enemy in self.enemies:
             enemy.draw(self.screen)
+
+        # Desenha a interface
+        self.ui.update()
 
         # Atualiza a tela
         pygame.display.flip()
