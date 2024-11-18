@@ -90,7 +90,10 @@ class Enemy(pygame.sprite.Sprite):
             self.frame_count = 0
             if self.is_attacking:
                 if self.attack_index < len(self.attack_images):
-                    self.image = self.attack_images[self.attack_index]
+                    if self.direction < 0:
+                        self.image = pygame.transform.flip(self.attack_images[self.attack_index], True, False)
+                    elif self.direction > 0:
+                        self.image = self.attack_images[self.attack_index]
                     self.attack_index += 1
                 else:
                     self.attack_index = 0  # Reinicia o ataque
@@ -98,6 +101,8 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.walk_index = (self.walk_index + 1) % len(animation_images)
                 self.image = animation_images[self.walk_index]
+                if self.direction < 0:
+                    self.image = pygame.transform.flip(self.image, True, False)
 
     def update(self, player):
         """Atualiza o estado do inimigo."""
