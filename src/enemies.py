@@ -39,6 +39,9 @@ class Enemy(pygame.sprite.Sprite):
         self.platforms = platforms
         self.on_platform = False  # Verifica se o inimigo está em uma plataforma
 
+        # Verifica direção de movimento
+        self.is_left = 0
+
     def load_images(self, folder_name, frame_count):
         """Carrega uma lista de imagens de uma pasta específica."""
         folder_path = os.path.join(self.sprites_path, folder_name)
@@ -54,6 +57,10 @@ class Enemy(pygame.sprite.Sprite):
         # Verifica os limites de patrulha
         if self.rect.left <= self.patrol_range[0] or self.rect.right >= self.patrol_range[1]:
             self.direction *= -1
+            if not self.is_left:
+                self.is_left = True
+            else:
+                self.is_left = False
         # Atualiza a animação de caminhada
         self.update_animation(self.walk_images)
 
@@ -98,6 +105,8 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.walk_index = (self.walk_index + 1) % len(animation_images)
                 self.image = animation_images[self.walk_index]
+                if self.is_left:
+                    self.image = pygame.transform.flip(self.image, True, False)
 
     def update(self, player):
         """Atualiza o estado do inimigo."""
