@@ -2,7 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/PyGameProject.iml" filepath="$PROJECT_DIR$/.idea/PyGameProject.iml" />
+=======
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/OutlawSaloon.iml" filepath="$PROJECT_DIR$/.idea/OutlawSaloon.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/OutlawSaloon_ROB.iml" filepath="$PROJECT_DIR$/.idea/OutlawSaloon_ROB.iml" />
+>>>>>>> 63ea0c2a64d02fda448f5ae63e57e82347e505ff
+>>>>>>> 9a7ffe569361f09fca4ac74a80ddd0ce30812bf1
     </modules>
   </component>
 </project>

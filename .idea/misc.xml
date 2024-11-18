@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (PyGameProject)" project-jdk-type="Python SDK" />
+=======
+  <component name="Black">
+<<<<<<< HEAD
+    <option name="sdkName" value="Python 3.12 (OutlawSaloon)" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (OutlawSaloon)" project-jdk-type="Python SDK" />
+=======
+    <option name="sdkName" value="Python 3.12 (OutlawSaloon_ROB)" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (OutlawSaloon_ROB)" project-jdk-type="Python SDK" />
+>>>>>>> 63ea0c2a64d02fda448f5ae63e57e82347e505ff
+>>>>>>> 9a7ffe569361f09fca4ac74a80ddd0ce30812bf1
 </project>
