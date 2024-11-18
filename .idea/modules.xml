@@ -3,10 +3,14 @@
   <component name="ProjectModuleManager">
     <modules>
 <<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/PyGameProject.iml" filepath="$PROJECT_DIR$/.idea/PyGameProject.iml" />
+=======
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/OutlawSaloon.iml" filepath="$PROJECT_DIR$/.idea/OutlawSaloon.iml" />
 =======
       <module fileurl="file://$PROJECT_DIR$/.idea/OutlawSaloon_ROB.iml" filepath="$PROJECT_DIR$/.idea/OutlawSaloon_ROB.iml" />
 >>>>>>> 63ea0c2a64d02fda448f5ae63e57e82347e505ff
+>>>>>>> 5248aa49460645f2c1ff535ff8533088350b313b
     </modules>
   </component>
 </project>

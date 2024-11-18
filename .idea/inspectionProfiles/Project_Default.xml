@@ -2,6 +2,8 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
     <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">
         <list>
@@ -22,11 +24,15 @@
         <list>
           <option value="list.*" />
 =======
+>>>>>>> 5248aa49460645f2c1ff535ff8533088350b313b
     <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredIdentifiers">
         <list>
           <option value="starship.Starship.*" />
+<<<<<<< HEAD
+=======
 >>>>>>> 63ea0c2a64d02fda448f5ae63e57e82347e505ff
+>>>>>>> 5248aa49460645f2c1ff535ff8533088350b313b
         </list>
       </option>
     </inspection_tool>
