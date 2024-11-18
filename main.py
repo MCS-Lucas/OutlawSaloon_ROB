@@ -4,36 +4,23 @@
     Módulo de ponto de entrada para o jogo.
     Ele inicializa o Pygame, carrega os recursos, cria uma instância do jogo e executa o loop principal.
 """
-
 import pygame
 import sys
-import config
-from src.level import bg
-from src.enemy import Enemy
-from src.level import Level
+from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from src.utils import show_menu
+from src.game import Game
 
 
-# Inicializar o Pygame
-pygame.init()
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Usa valores de config.py
+    # Exibe o menu antes de iniciar o jogo
+    show_menu(screen)
+    game = Game()
+    game.run()
+    pygame.quit()
+    sys.exit()
 
-# Configurações da tela
-screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-pygame.display.set_caption("Outlaw Saloon: Rails of Blood")
 
-# Loop principal do jogo
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    screen.blit(bg, (0, 0))
-    Level.level_load_1(screen)
-    pygame.display.update()
-
-    # Atualizar a tela
-    pygame.display.flip()
-
-# Finalizar o Pygame
-pygame.quit()
-sys.exit()
+if __name__ == "__main__":
+    main()

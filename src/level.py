@@ -6,19 +6,32 @@
     e quaisquer variáveis específicas associadas à fase do jogo.
 """
 import pygame
-from .enemy import Enemy
-
-bg = pygame.image.load("./assets/images/background_x720.jpeg")
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_PATH
 
 
 class Level:
     def __init__(self):
-        self.level = 0
+        # Carrega o background e ajusta a escala para as dimensões da tela
+        self.background = pygame.image.load(BACKGROUND_PATH).convert()
+        self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    @staticmethod
-    def level_load_1(screen):
-        # Instâncias
-        cowboy3 = Enemy(100, 410, 60, 60, 600)
+        # Define as plataformas como retângulos
+        self.platforms = [
+            pygame.Rect(0, 684, 1280, 50),
+            pygame.Rect(595, 650, 40, 60),
+            pygame.Rect(1180, 638, 100, 70),
+            pygame.Rect(400, 500, 100, 15),
+            pygame.Rect(665, 585, 50, 15),
+            pygame.Rect(678, 443, 70, 15),
+            pygame.Rect(0, 400, 20, 400),
+            pygame.Rect(1270, 400, 20, 400),
+            # Adicione mais conforme necessário
+        ]
 
-        # Spawn
-        cowboy3.draw(screen)
+    def draw(self, screen):
+        # Desenha o background
+        screen.blit(self.background, (0, 0))
+
+    def get_platforms(self):
+        return self.platforms
+
