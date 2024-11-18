@@ -10,7 +10,7 @@ import sys
 import config
 from src.level import bg
 from src.enemy import Enemy
-
+from src.level import Level
 
 
 # Inicializar o Pygame
@@ -20,9 +20,6 @@ pygame.init()
 screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 pygame.display.set_caption("Outlaw Saloon: Rails of Blood")
 
-# Instâncias
-cowboy3 = Enemy(100, 410, 60, 60, 600)
-
 # Loop principal do jogo
 running = True
 while running:
@@ -31,10 +28,8 @@ while running:
             running = False
 
     screen.blit(bg, (0, 0))
-    cowboy3.draw(screen)
+    Level.level_load_1(screen)
     pygame.display.update()
-
-
 
     # Atualizar a tela
     pygame.display.flip()
