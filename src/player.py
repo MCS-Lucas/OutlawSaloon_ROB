@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_index = 0
         self.shoot_index = 0
         self.velocity_y = 0
+        self.direction = 1  # DIRETA: 1 || ESQUERDA: 0
 
         # Controle de velocidade da animação
         self.frame_count = 0
@@ -49,9 +50,11 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:  # Movendo para a esquerda com a tecla 'A'
             self.rect.x -= 5
+            self.direction = 1
             self.update_animation(self.move_images)
         elif keys[pygame.K_d]:  # Movendo para a direita com a tecla 'D'
             self.rect.x += 5
+            self.direction = -1
             self.update_animation(self.move_images)
 
         if keys[pygame.K_SPACE]:
@@ -106,7 +109,15 @@ class Player(pygame.sprite.Sprite):
         if self.frame_count >= self.frame_delay:
             self.frame_count = 0  # Reinicia o contador
             self.move_index = (self.move_index + 1) % len(animation_images)
-            self.image = animation_images[self.move_index]
+
+            # Seleciona próximo frame de movimento
+            new_image = animation_images[self.move_index]
+
+            # Aplica o flip se o jogador estiver virado para a esquerda
+            if self.direction > 0:
+                self.image = pygame.transform.flip(new_image, True, False)
+            else:
+                self.image = new_image
 
     def check_enemy_collision(self, enemies, ui):
         """Verifica colisão com inimigos e reduz vida."""
