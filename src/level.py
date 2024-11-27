@@ -34,4 +34,3 @@ class Level:
 
     def get_platforms(self):
         return self.platforms
-

@@ -8,7 +8,7 @@
 # Configurações da tela
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-FPS = 30
+
 
 # Configurações de cores
 WHITE = (255, 255, 255)
