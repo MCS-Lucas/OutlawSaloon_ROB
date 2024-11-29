@@ -47,6 +47,8 @@ class Game:
         # Atualiza todos os inimigos
         for enemy in self.enemies:
             enemy.update(self.player, bullet_group)
+            if enemy.health <= 0:
+                self.enemies.remove(enemy)
 
         # Verifica se o jogo acabou
         if self.ui.is_game_over():

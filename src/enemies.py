@@ -41,6 +41,11 @@ class Enemy(pygame.sprite.Sprite):
         self.platforms = platforms
         self.on_platform = False  # Verifica se o inimigo está em uma plataforma
 
+        # Vida do inimigo
+
+        self.health = 100
+        self.max_health = self.health
+
     def load_images(self, folder_name, frame_count):
         """Carrega uma lista de imagens de uma pasta específica."""
         folder_path = os.path.join(self.sprites_path, folder_name)
@@ -126,8 +131,15 @@ class Enemy(pygame.sprite.Sprite):
             self.attack(player)
         for bullet in bullet_group:
             if bullet.rect.colliderect(self.rect):
+                self.health -= 25
                 bullet.kill()
+        self.check_alive()
 
+    def check_alive(self):
+        """Verifica se o inimigo está vivo."""
+        if self.health <= 0:
+            self.health = 0
+            self.speed = 0
     def draw(self, screen):
         """Desenha o inimigo na tela."""
         screen.blit(self.image, self.rect)
