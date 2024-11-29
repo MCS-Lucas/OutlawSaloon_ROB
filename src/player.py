@@ -10,6 +10,7 @@ import pygame
 from config import SCREEN_HEIGHT
 from src.bullet import Bullet
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -18,12 +19,10 @@ class Player(pygame.sprite.Sprite):
 
         self.sprites_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'sprites')
 
-
         # Carrega as animações
         self.move_images = self.load_images('walk')
         self.jump_images = self.load_images('jump')
         self.shoot_images = self.load_images('shot')
-
 
         # Define a imagem e posição iniciais do jogador
         self.image = self.move_images[0]
@@ -105,17 +104,13 @@ class Player(pygame.sprite.Sprite):
             self.is_jumping = False
             self.velocity_y = 0
 
+
     def shoot(self, bullet_group):
         """Inicia a sequência de tiro."""
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
             self.is_shooting = True
-            bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * (self.direction * -1)), self.rect.centery, self.direction)
-            bullet_group.add(bullet)
             self.shoot_index = 0
-
-
-
 
     def update_animation(self, animation_images):
         """Atualiza o frame da animação do jogador."""
@@ -123,16 +118,19 @@ class Player(pygame.sprite.Sprite):
         self.frame_count += 1
         if self.frame_count >= self.frame_delay:
             self.frame_count = 0  # Reinicia o contador
-            self.move_index = (self.move_index + 1) % len(animation_images)
+            if not self.is_jumping:
+                self.move_index = (self.move_index + 1) % len(animation_images)
 
-            # Seleciona próximo frame de movimento
-            new_image = animation_images[self.move_index]
+                # Seleciona próximo frame de movimento
+                new_image = animation_images[self.move_index]
 
-            # Aplica o flip se o jogador estiver virado para a esquerda
-            if self.direction > 0:
-                self.image = pygame.transform.flip(new_image, True, False)
-            else:
-                self.image = new_image
+                # Aplica o flip se o jogador estiver virado para a esquerda
+                if self.direction > 0:
+                    self.image = pygame.transform.flip(new_image, True, False)
+                else:
+                    self.image = new_image
+
+
 
     def check_enemy_collision(self, enemies, ui):
         """Verifica colisão com inimigos e reduz vida."""
@@ -154,24 +152,41 @@ class Player(pygame.sprite.Sprite):
             if self.frame_count >= self.frame_delay:
                 self.frame_count = 0
                 if self.jump_index < len(self.jump_images):
-                    self.image = self.jump_images[self.jump_index]
+                    if self.direction > 0:
+                        self.image = pygame.transform.flip(self.jump_images[self.jump_index], True, False)
+                    elif self.direction < 0:
+                        self.image = self.jump_images[self.jump_index]
                     self.jump_index += 1
+                else:
+                    self.is_jumping = False
+
 
         # Verifica e atualiza a animação de tiro
         if self.is_shooting:
             self.frame_count += 1
             if self.frame_count >= self.frame_delay:
                 self.frame_count = 0
-                self.image = self.shoot_images[self.shoot_index]
+                if self.shoot_index < len(self.shoot_images):
+                    if self.direction > 0:
+                        self.image = pygame.transform.flip(self.shoot_images[self.shoot_index], True, False)
+                    elif self.direction < 0:
+                        self.image = self.shoot_images[self.shoot_index]
                 self.shoot_index += 1
-                if self.shoot_index >= len(self.shoot_images):
+                if self.shoot_index == len(self.shoot_images):
+                    bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * (self.direction * -1)), self.rect.centery,self.direction)
+                    bullet_group.add(bullet)
                     self.is_shooting = False
+
+            if not self.is_jumping and not self.is_shooting:
+                self.update_animation(self.move_images)
+
             if self.shoot_cooldown > 0:
                 self.shoot_cooldown -= 1
 
         for bullet in bullet_group:
             if bullet.rect.colliderect(self.rect):
                 bullet.kill()
+
     def draw(self, screen):
         """Desenha o jogador na tela."""
         screen.blit(self.image, self.rect)

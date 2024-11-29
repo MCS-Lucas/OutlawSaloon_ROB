@@ -24,7 +24,8 @@ class Game:
         self.level = Level()  # Inicializa o background e plataformas
         self.player = Player()  # Inicializa o jogador
         self.enemies = [  # Lista de inimigos
-            Enemy(x=680, y=600, patrol_range=(680, 1100), platforms=self.level.get_platforms())
+            Enemy(x=680, y=600, patrol_range=(680, 1100), platforms=self.level.get_platforms()), # Inimigo 1
+            Enemy(x=680, y=360, patrol_range=(640, 800), platforms=self.level.get_platforms()), # Inimigo 2
         ]
         self.ui = UI(self.screen)  # Inicializa o sistema de interface
         self.clock = pygame.time.Clock()
