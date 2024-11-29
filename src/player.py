@@ -8,19 +8,22 @@ import os
 import pygame
 
 from config import SCREEN_HEIGHT
-
+from src.bullet import Bullet
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
         # Caminho para os diretórios das animações
+
         self.sprites_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'sprites')
+
 
         # Carrega as animações
         self.move_images = self.load_images('walk')
         self.jump_images = self.load_images('jump')
         self.shoot_images = self.load_images('shot')
+
 
         # Define a imagem e posição iniciais do jogador
         self.image = self.move_images[0]
@@ -35,6 +38,7 @@ class Player(pygame.sprite.Sprite):
         self.shoot_index = 0
         self.velocity_y = 0
         self.direction = 1  # DIRETA: 1 || ESQUERDA: 0
+        self.shoot_cooldown = 0
 
         # Controle de velocidade da animação
         self.frame_count = 0
@@ -46,7 +50,7 @@ class Player(pygame.sprite.Sprite):
         return [pygame.image.load(os.path.join(folder_path, f"{folder_name.capitalize()}{i}.png")).convert_alpha()
                 for i in range(1, 10)]
 
-    def move(self):
+    def move(self, bullet_group):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:  # Movendo para a esquerda com a tecla 'A'
             self.rect.x -= 5
@@ -59,6 +63,10 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_SPACE]:
             self.jump()
+
+        if keys[pygame.K_RSHIFT]:
+            self.shoot(bullet_group)
+
 
     def jump(self):
         """Inicia o pulo se não estiver pulando."""
@@ -97,10 +105,17 @@ class Player(pygame.sprite.Sprite):
             self.is_jumping = False
             self.velocity_y = 0
 
-    def shoot(self):
+    def shoot(self, bullet_group):
         """Inicia a sequência de tiro."""
-        self.is_shooting = True
-        self.shoot_index = 0
+        if self.shoot_cooldown == 0:
+            self.shoot_cooldown = 20
+            self.is_shooting = True
+            bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * (self.direction * -1)), self.rect.centery, self.direction)
+            bullet_group.add(bullet)
+            self.shoot_index = 0
+
+
+
 
     def update_animation(self, animation_images):
         """Atualiza o frame da animação do jogador."""
@@ -127,9 +142,9 @@ class Player(pygame.sprite.Sprite):
                 # Opcional: reposicione o jogador após colisão
                 self.rect.center = (100, SCREEN_HEIGHT - 100)
 
-    def update(self, platforms, enemies, ui):
+    def update(self, platforms, enemies, ui, bullet_group):
         """Atualiza o estado e a animação do jogador com a física de colisão."""
-        self.move()
+        self.move(bullet_group)
         self.apply_gravity(platforms)
         self.check_enemy_collision(enemies, ui)
 
@@ -151,7 +166,12 @@ class Player(pygame.sprite.Sprite):
                 self.shoot_index += 1
                 if self.shoot_index >= len(self.shoot_images):
                     self.is_shooting = False
+            if self.shoot_cooldown > 0:
+                self.shoot_cooldown -= 1
 
+        for bullet in bullet_group:
+            if bullet.rect.colliderect(self.rect):
+                bullet.kill()
     def draw(self, screen):
         """Desenha o jogador na tela."""
         screen.blit(self.image, self.rect)

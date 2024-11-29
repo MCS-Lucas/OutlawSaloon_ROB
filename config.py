@@ -20,3 +20,6 @@ BLUE = (0, 0, 255)
 # Configurações de FPS
 FPS = 60
 BACKGROUND_PATH = "assets/images/background.png"
+
+#Criar grupo de sprites
+

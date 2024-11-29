@@ -10,6 +10,8 @@ from config import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.utils import show_menu
 from src.game import Game
 
+
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Usa valores de config.py
