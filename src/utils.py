@@ -15,6 +15,7 @@ def show_menu(screen):
     background_image = pygame.image.load(os.path.join("assets", "images", "Background-menu.png"))
     background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+
     # Configurações dos botões
     button_font = pygame.font.Font(None, 40)
     button_color = (125, 84, 71)

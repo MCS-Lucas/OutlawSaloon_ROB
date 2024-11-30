@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+<<<<<<< HEAD
+=======
+>>>>>>> 2c99a12cc0ea7baa4745f22dc44c61aa8ae04434
+>>>>>>> feature/player
   </component>
 </project>

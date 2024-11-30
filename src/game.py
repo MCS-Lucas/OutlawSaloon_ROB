@@ -4,6 +4,8 @@
     Módulo de gerenciamento do jogo.
     Cria e atualiza elementos principais, como jogador, inimigos, ui e inserts.
 """
+import os
+
 import pygame
 from config import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.level import Level
@@ -12,7 +14,9 @@ from src.enemies import Enemy
 from src.ui import UI
 
 
+
 class Game:
+
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -20,28 +24,38 @@ class Game:
         self.level = Level()  # Inicializa o background e plataformas
         self.player = Player()  # Inicializa o jogador
         self.enemies = [  # Lista de inimigos
-            Enemy(x=680, y=600, patrol_range=(680, 1100), platforms=self.level.get_platforms())
+            Enemy(x=680, y=600, patrol_range=(680, 1100), platforms=self.level.get_platforms()), # Inimigo 1
+            Enemy(x=680, y=360, patrol_range=(640, 800), platforms=self.level.get_platforms()), # Inimigo 2
         ]
         self.ui = UI(self.screen)  # Inicializa o sistema de interface
         self.clock = pygame.time.Clock()
         self.running = True
+        self.bullet_group = pygame.sprite.Group()
 
     def get_player(self):
         """Retorna o jogador para interações externas."""
         return self.player
 
-    def update(self):
+    def get_enemies(self):
+        """Retorna a lista de inimigos para interações externas."""
+        return self.enemies
+
+    def update(self, bullet_group):
         """Atualiza os elementos do jogo."""
         # Atualiza o jogador com colisões de plataformas
-        self.player.update(self.level.get_platforms(), self.enemies, self.ui)
+        self.player.update(self.level.get_platforms(), self.enemies, self.ui, self.bullet_group)
 
         # Atualiza todos os inimigos
         for enemy in self.enemies:
-            enemy.update(self.player)
+            enemy.update(self.player, bullet_group)
+            if enemy.health <= 0:
+                self.enemies.remove(enemy)
 
         # Verifica se o jogo acabou
         if self.ui.is_game_over():
             self.running = False
+
+        self.bullet_group.update(bullet_group, self.get_enemies(), self.get_player())
 
     def draw(self):
         """Desenha os elementos do jogo."""
@@ -58,6 +72,10 @@ class Game:
         # Desenha a interface
         self.ui.update()
 
+        # Desenha os tiros
+
+        self.bullet_group.draw(self.screen)
+
         # Atualiza a tela
         pygame.display.flip()
 
@@ -68,8 +86,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
 
-            self.update()
+            self.update(bullet_group=self.bullet_group)
             self.draw()
             self.clock.tick(60)  # Limita o jogo a 60 FPS
 
         pygame.quit()
+
+

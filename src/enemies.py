@@ -6,6 +6,8 @@
 import pygame
 import os
 
+from src.bullet import Bullet
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y, patrol_range, platforms):
@@ -13,7 +15,7 @@ class Enemy(pygame.sprite.Sprite):
 
         # Caminho para os diretórios das animações
         self.sprites_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'sprites', 'enemies')
-
+        self.shoot_cooldown = 0 # Tempo de espera entre os tiros
         # Carrega as animações
         self.walk_images = self.load_images('walk', 10)
         self.attack_images = self.load_images('punch', 4)
@@ -38,6 +40,11 @@ class Enemy(pygame.sprite.Sprite):
         # Plataformas para colisão
         self.platforms = platforms
         self.on_platform = False  # Verifica se o inimigo está em uma plataforma
+
+        # Vida do inimigo
+
+        self.health = 100
+        self.max_health = self.health
 
     def load_images(self, folder_name, frame_count):
         """Carrega uma lista de imagens de uma pasta específica."""
@@ -83,6 +90,17 @@ class Enemy(pygame.sprite.Sprite):
             return True  # Indica que o jogador foi atacado
         return False
 
+    def shoot(self, bullet_group):
+        if self.shoot_cooldown == 0:
+            self.shoot_cooldown = 20
+            self.is_shooting = True
+            bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * (self.direction * -1)), self.rect.centery, self.direction)
+            bullet_group.add(bullet)
+            self.shoot_index = 0
+
+
+
+
     def update_animation(self, animation_images):
         """Atualiza o frame da animação."""
         self.frame_count += 1
@@ -104,14 +122,24 @@ class Enemy(pygame.sprite.Sprite):
                 if self.direction < 0:
                     self.image = pygame.transform.flip(self.image, True, False)
 
-    def update(self, player):
+    def update(self, player, bullet_group):
         """Atualiza o estado do inimigo."""
         if self.is_attacking:
             self.update_animation(self.attack_images)
         else:
             self.move()
             self.attack(player)
+        for bullet in bullet_group:
+            if bullet.rect.colliderect(self.rect):
+                self.health -= 25
+                bullet.kill()
+        self.check_alive()
 
+    def check_alive(self):
+        """Verifica se o inimigo está vivo."""
+        if self.health <= 0:
+            self.health = 0
+            self.speed = 0
     def draw(self, screen):
         """Desenha o inimigo na tela."""
         screen.blit(self.image, self.rect)

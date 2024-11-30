@@ -14,6 +14,8 @@ from src.game import Game
 from src.ui import UI
 
 
+
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
